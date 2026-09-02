@@ -114,6 +114,40 @@ evaluation without being told anything.
 
 ---
 
+## L1. Lens packs a stranger can actually use · ~3h
+
+The internal edition ships lens packs for named apps. This edition ships none, which is correct,
+but "write your own from a blank template" is a wall for someone who just installed a plugin.
+
+Zain, 3 Sep: offer **starting points, not finished lenses**. A handful of neutral templates the
+user picks and then edits, for example e-commerce, booking, fintech, a dashboard. They are
+examples to shape, not products to select.
+
+- [ ] Two or three neutral templates in `reference/lens/`, marked `<!-- starter -->`
+- [ ] Settings offers "start from a template" alongside "paste your own"
+- [ ] A template says out loud that it is generic and asks the user to add their persona
+
+**Verify.** Someone who has never written a lens produces a usable one in under ten minutes.
+
+**Open question for Zain.** Do templates ship in the Worker (visible to everyone, one copy to
+maintain) or in the plugin bundle (editable offline, but it becomes a plugin release to change
+one)? The Worker matches how everything else here works.
+
+---
+
+## Before publishing: swap the Gemini keys · BLOCKING
+
+The keys on `scout-field` today are the same three the internal edition uses. Free-tier quota is
+usually counted per Google project, so strangers spending free runs can drain the quota the
+internal demo depends on.
+
+- [ ] New keys on a **separate Google account** before the Community listing goes live
+- [ ] `npx wrangler secret put GEMINI_API_KEY` on `scout-field` only
+
+Not urgent while the plugin is unpublished, because nobody can reach the free run yet.
+
+---
+
 ## Later, not now
 
 - **Flow evaluation.** Evaluate a sequence of screens rather than one, so it can find

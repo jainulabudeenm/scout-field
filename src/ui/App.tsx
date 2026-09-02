@@ -467,23 +467,25 @@ export default function App() {
               <option value="production">Production</option>
             </select>
           </label>
-          <label className="inline">
-            Lens
-            <select
-              value={upfrontLens}
-              onChange={(e) => {
-                setUpfrontLens(e.target.value);
-                setLensNotes('');
-              }}
-            >
-              <option value="">General</option>
-              {allLenses.map((l) => (
-                <option key={l.id} value={l.id}>
-                  {l.name}
-                </option>
-              ))}
-            </select>
-          </label>
+          {allLenses.length > 0 && (
+            <label className="inline">
+              Lens
+              <select
+                value={upfrontLens}
+                onChange={(e) => {
+                  setUpfrontLens(e.target.value);
+                  setLensNotes('');
+                }}
+              >
+                <option value="">General</option>
+                {allLenses.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {l.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
         </div>
 
         {pickedStarter && (
@@ -558,7 +560,7 @@ export default function App() {
           />
           <Actions
             result={result}
-            status={boardNote || annotated}
+            status={[annotated, boardNote].filter(Boolean).join(' · ')}
             onRedraw={() =>
               send({
                 type: 'annotate',
