@@ -106,15 +106,18 @@ So the public edition asks the user for their own API key, which they paste into
 That is correct but it is a cold start. A designer who has never heard of Scout will not go and
 make a Google API key to try an unknown plugin.
 
-**So: one free run on the maintainer's key, then bring your own.** That is the next milestone.
-The full specification is `docs/prd-free-trial.md`. The short version:
+**So: everyone's first run is on the maintainer's key, then they bring their own.** That is the
+next milestone. Full specification in `docs/prd-first-run-free.md`. The short version:
 
-- A run with no key and no access code is a **trial run**, charged against the maintainer's key
-- Each Figma user gets **one**. After that the plugin asks for a key
+- A run with no key and no access code is a **free run**, charged against the maintainer's key
+- Each Figma user gets **one**. After that the plugin asks for a key, and a key means no limit
 - A **global daily cap** protects the maintainer's quota, because the per-user id is
-  client-supplied and therefore spoofable
-- The trial runs on a free-tier Google key, and **Google's free tier may train on what is
-  submitted**. The user must be told this before the trial run, not after
+  client-supplied and therefore forgeable
+- The free run uses a free-tier Google key, and **Google's free tier may train on what is
+  submitted**. The user must be told this before the run, not after
+
+**It is not a trial, and the copy must never call it one.** Nothing is reduced or held back: the
+first run is the whole tool. The only limit is how many times.
 
 ## State right now
 
@@ -126,7 +129,7 @@ a crop per finding, the report board, chat follow-ups, custom lens packs, export
 nothing.
 
 **Not done:**
-1. The free trial. See `milestones.md` F1 to F4.
+1. First run free. See `milestones.md` F1 to F4.
 2. The Worker has never been deployed. `scout-field` does not exist on Cloudflare yet.
 3. The plugin has never been imported into Figma from this repo.
 4. No Figma Community submission. No icon, no cover art, no listing copy.

@@ -4,7 +4,7 @@ The only file updated during the build. Tick a box when its verify step passes, 
 is written.
 
 **Order matters.** D1 proves the thing runs at all before any feature is added to it. F1 to F4
-build the free trial. P1 to P3 are the Community submission.
+build the free first run. P1 to P3 are the Community submission.
 
 ---
 
@@ -27,7 +27,7 @@ build the free trial. P1 to P3 are the Community submission.
 
 Nothing below this line is worth doing until a real evaluation completes end to end.
 
-- [ ] `npx wrangler kv namespace create TRIAL`, put the id in `wrangler.toml`
+- [ ] `npx wrangler kv namespace create FREE_RUNS`, put the id in `wrangler.toml`
 - [ ] `npx wrangler secret put GEMINI_API_KEY`
 - [ ] `npx wrangler secret put SCOUT_ACCESS_CODE` (still needed: it is the private path)
 - [ ] `npm run deploy`
@@ -42,19 +42,22 @@ off means node resolution is broken, which is a bigger problem than any feature 
 
 ---
 
-## The free trial
+## First run free
 
-Full specification: `docs/prd-free-trial.md`. Read it before starting F1.
+Full specification: `docs/prd-first-run-free.md`. Read it before starting F1.
 
-### F1. Worker counts trial runs · ~45m
+**It is not a trial.** The first run is the whole tool. The only limit is how many times, and a
+key removes it. Do not let the words trial, upgrade or premium into the UI copy.
 
-- [ ] `worker/src/trial.ts` with `spendTrial()`, `FREE_RUNS = 1`, `DAILY_CAP = 50`
-- [ ] `TRIAL: KVNamespace` on `Env`, `x-scout-user` added to the CORS allow-headers
-- [ ] The gate at `worker/src/index.ts` roughly line 180 calls `spendTrial` when there is no key
+### F1. Worker counts free runs · ~45m
+
+- [ ] `worker/src/free-run.ts` with `spendFreeRun()`, `RUNS_PER_USER = 1`, `RUNS_PER_DAY = 50`
+- [ ] `FREE_RUNS: KVNamespace` on `Env`, `x-scout-user` added to the CORS allow-headers
+- [ ] The gate at `worker/src/index.ts` roughly line 180 calls `spendFreeRun` when there is no key
       and no code, and returns **402** with `{ error, reason }`
 
 **Verify.** Three curls against the deployed worker: no key and a new user id succeeds; the same
-id again returns 402 `trial_used`; a request with `x-scout-key` succeeds and moves neither counter.
+id again returns 402 `runs_used`; a request with `x-scout-key` succeeds and moves neither counter.
 
 ### F2. Plugin sends the user id · ~20m
 
@@ -67,7 +70,7 @@ id again returns 402 `trial_used`; a request with `x-scout-key` succeeds and mov
 ### F3. The panel converts instead of erroring · ~45m
 
 - [ ] On 402, show a heading, one line of why, and an **Add your key** button
-- [ ] `trial_used` and `daily_full` read differently
+- [ ] `runs_used` and `daily_full` read differently
 - [ ] The button opens Settings with the key field focused
 - [ ] A line naming `aistudio.google.com/apikey` and that it takes about a minute
 
@@ -76,8 +79,8 @@ obvious what to do next without reading a README.
 
 ### F4. The free-tier disclosure · ~20m
 
-- [ ] Shown before the **first** trial run, with a confirm step
-- [ ] `trialNoticeSeen` in `figma.clientStorage`, so it appears once
+- [ ] Shown before the **first** free run, with a confirm step
+- [ ] `freeRunNoticeSeen` in `figma.clientStorage`, so it appears once
 - [ ] Never shown to a user who has their own key
 
 **Verify.** Fresh install: the notice appears, confirming runs the evaluation, and a second run
@@ -107,7 +110,7 @@ evaluation without being told anything.
 
 - [ ] Cloudflare rate-limit rule in front of the Worker
 - [ ] Check the daily counter. If the cap is hit every day, decide: raise it, lower it, or accept
-      that the trial is doing its job
+      that it is doing its job
 
 ---
 
