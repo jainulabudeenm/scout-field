@@ -1,0 +1,11 @@
+# Copy to .dev.vars and fill in. Never committed.
+
+SCOUT_ACCESS_CODE=pick-a-short-word
+
+# One key, or several separated by commas. Free-tier keys have a daily cap, so
+# Scout moves to the next key in the list when one runs out and only gives up
+# when every key is spent. Get keys at https://aistudio.google.com/apikey
+GEMINI_API_KEY=key-one,key-two,key-three
+
+# Optional. Better quality, and the paid API does not train on what you send it.
+ANTHROPIC_API_KEY=

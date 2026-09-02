@@ -1,0 +1,33 @@
+{
+  "name": "scout",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Heuristic evaluation for Figma screens",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build:main": "vite build --config vite.config.main.ts",
+    "build:ui": "vite build --config vite.config.ui.ts",
+    "build": "npm run build:main && npm run build:ui",
+    "watch:main": "vite build --config vite.config.main.ts --watch",
+    "watch:ui": "vite build --config vite.config.ui.ts --watch",
+    "dev": "npm run build && (npm run watch:main & npm run watch:ui)",
+    "typecheck": "tsc --noEmit",
+    "sync:skill": "cp reference/core/*.md reference/platform/*.md reference/output/*.md skill/references/ && cp reference/lens/_TEMPLATE.md skill/references/lens-template.md && echo synced",
+    "check:neutral": "! grep -rniE 'literacy|tier [123]' reference/core/ reference/platform/ reference/output/ && echo 'library is domain-neutral'",
+    "test": "node --experimental-strip-types --no-warnings test/bbox.mjs"
+  },
+  "dependencies": {
+    "marked": "^15.0.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.108.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "vite-plugin-singlefile": "^2.1.0"
+  }
+}

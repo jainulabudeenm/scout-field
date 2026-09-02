@@ -1,0 +1,958 @@
+<!--scout:begin-->
+<title>Scout Triage Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  /* Light is the base. Severity owns red/orange/amber/grey, so the UI accent
+     is a cool indigo that can never be mistaken for a severity. */
+  :root {
+    --ground: #fbfbfd;
+    --surface: #ffffff;
+    --surface-2: #f3f4f8;
+    --ink: #16161c;
+    --ink-2: #5a5b6a;
+    --ink-3: #8d8e9e;
+    --line: #e3e4ec;
+    --line-2: #cfd0dc;
+    --accent: #3a5bc7;
+    --accent-soft: #e8ecfb;
+    --accent-ink: #ffffff;
+
+    --sev-4: #e5484d;
+    --sev-3: #f76b15;
+    --sev-2: #d99a0b;
+    --sev-1: #8e8c99;
+    --sev-0: #8e8c99;
+
+    --done: #2f855a;
+    --done-soft: #e4f3ea;
+
+    --display: Archivo, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --radius: 8px;
+    --shadow: 0 1px 2px rgba(20, 20, 32, 0.05), 0 4px 12px rgba(20, 20, 32, 0.04);
+  }
+
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground: #101016;
+      --surface: #17171f;
+      --surface-2: #1e1e28;
+      --ink: #ececf2;
+      --ink-2: #a4a5b6;
+      --ink-3: #74758a;
+      --line: #2a2b38;
+      --line-2: #3a3b4c;
+      --accent: #8fa5ef;
+      --accent-soft: #21273f;
+      --accent-ink: #101016;
+      --sev-4: #ff6369;
+      --sev-3: #ff9147;
+      --sev-2: #f0c04a;
+      --sev-1: #9b9caf;
+      --sev-0: #9b9caf;
+      --done: #6cc48f;
+      --done-soft: #1b2e24;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #101016;
+    --surface: #17171f;
+    --surface-2: #1e1e28;
+    --ink: #ececf2;
+    --ink-2: #a4a5b6;
+    --ink-3: #74758a;
+    --line: #2a2b38;
+    --line-2: #3a3b4c;
+    --accent: #8fa5ef;
+    --accent-soft: #21273f;
+    --accent-ink: #101016;
+    --sev-4: #ff6369;
+    --sev-3: #ff9147;
+    --sev-2: #f0c04a;
+    --sev-1: #9b9caf;
+    --sev-0: #9b9caf;
+    --done: #6cc48f;
+    --done-soft: #1b2e24;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.3);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; }
+
+  button, input, select { font: inherit; color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .masthead-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 18px 28px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 5px;
+  }
+
+  .masthead h1 { font-size: 25px; font-weight: 700; letter-spacing: -0.018em; }
+
+  .subject-meta {
+    margin-top: 5px;
+    color: var(--ink-2);
+    font-size: 13px;
+    font-family: var(--mono);
+  }
+
+  /* ---------- progress ---------- */
+
+  .progress { min-width: 260px; }
+
+  .progress-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 7px;
+  }
+
+  .progress-count {
+    font-family: var(--display);
+    font-size: 21px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .progress-label { font-size: 12px; color: var(--ink-2); }
+
+  .progress-track {
+    height: 7px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    overflow: hidden;
+    display: flex;
+  }
+
+  .progress-fill { background: var(--done); transition: width 0.25s ease; }
+
+  /* ---------- severity bar ---------- */
+
+  .sev-bar {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 16px 28px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .sev-tile {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    padding: 6px 12px 6px 10px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--tile);
+    border-radius: 6px;
+    background: var(--surface);
+    cursor: pointer;
+    transition: border-color 0.12s ease, background 0.12s ease;
+  }
+
+  .sev-tile:hover { border-color: var(--line-2); }
+  .sev-tile[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); border-left-color: var(--tile); }
+
+  .sev-tile b {
+    font-family: var(--display);
+    font-size: 17px;
+    font-variant-numeric: tabular-nums;
+    color: var(--tile);
+  }
+
+  .sev-tile span { font-size: 12px; color: var(--ink-2); }
+
+  .bar-spacer { flex: 1; }
+
+  /* ---------- toolbar ---------- */
+
+  .toolbar {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .btn {
+    padding: 6px 13px;
+    border: 1px solid var(--line-2);
+    border-radius: 6px;
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 13px;
+    transition: border-color 0.12s ease, background 0.12s ease;
+  }
+
+  .btn:hover:not(:disabled) { border-color: var(--accent); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+
+  .filter-note { font-size: 12px; color: var(--ink-3); font-family: var(--mono); }
+
+  /* ---------- layout ---------- */
+
+  main { max-width: 1180px; margin: 0 auto; padding: 30px 28px 100px; }
+
+  .layer { margin-bottom: 42px; }
+
+  .layer-head {
+    display: flex;
+    align-items: baseline;
+    gap: 11px;
+    padding-bottom: 9px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .layer-head h2 { font-size: 15px; font-weight: 600; letter-spacing: 0.005em; }
+
+  .layer-count {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  .cards { display: flex; flex-direction: column; gap: 14px; }
+
+  /* ---------- finding card ---------- */
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--sev);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: opacity 0.15s ease;
+  }
+
+  .card[data-state="fixed"], .card[data-state="wontfix"] { opacity: 0.58; }
+
+  .card-top {
+    display: flex;
+    gap: 13px;
+    padding: 15px 18px;
+    align-items: flex-start;
+  }
+
+  .num {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--sev);
+    color: #fff;
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card-main { flex: 1; min-width: 0; }
+
+  .card-title {
+    font-family: var(--display);
+    font-size: 15.5px;
+    font-weight: 600;
+    letter-spacing: -0.008em;
+    margin-bottom: 3px;
+  }
+
+  .card-ref {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    align-items: center;
+  }
+
+  .sev-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 1px 7px;
+    border-radius: 4px;
+    color: #fff;
+    background: var(--sev);
+  }
+
+  .flag {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--ink-3);
+    border: 1px solid var(--line-2);
+    border-radius: 4px;
+    padding: 0 6px;
+  }
+
+  .meaning {
+    margin: 9px 0 0;
+    color: var(--ink-2);
+    font-size: 13.5px;
+    max-width: 68ch;
+  }
+
+  .crop {
+    display: block;
+    max-width: min(100%, 460px);
+    margin: 13px 0 0;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+  }
+
+  .detail {
+    display: grid;
+    grid-template-columns: 118px 1fr;
+    gap: 7px 18px;
+    margin: 15px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+  }
+
+  .detail dt {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 2px;
+  }
+
+  .detail dd { margin: 0; max-width: 68ch; }
+
+  .upgrade {
+    margin: 14px 0 0;
+    padding: 9px 12px;
+    background: var(--accent-soft);
+    border-radius: 6px;
+    font-size: 13px;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 13px; }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 7px;
+    background: var(--surface-2);
+    border-radius: 4px;
+    color: var(--ink-2);
+  }
+
+  /* ---------- triage ---------- */
+
+  .triage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    padding: 11px 18px;
+    background: var(--surface-2);
+    border-top: 1px solid var(--line);
+  }
+
+  .triage-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-right: 3px;
+  }
+
+  .state-btn {
+    padding: 3px 11px;
+    border: 1px solid var(--line-2);
+    border-radius: 20px;
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 12.5px;
+    transition: border-color 0.12s ease, background 0.12s ease, color 0.12s ease;
+  }
+
+  .state-btn:hover:not(:disabled) { border-color: var(--accent); }
+  .state-btn:disabled { cursor: default; }
+  .state-btn[aria-pressed="true"] { background: var(--ink); color: var(--ground); border-color: var(--ink); }
+  .state-btn[aria-pressed="true"][data-state="fixed"] { background: var(--done); border-color: var(--done); color: #fff; }
+
+  .expand {
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ink-2);
+    font-size: 12.5px;
+    font-family: var(--mono);
+    padding: 3px 6px;
+  }
+
+  .expand:hover { color: var(--accent); }
+
+  /* ---------- empty / intake ---------- */
+
+  .intake { max-width: 680px; margin: 70px auto; padding: 0 28px; }
+
+  .intake h2 { font-size: 22px; margin-bottom: 10px; letter-spacing: -0.015em; }
+
+  .intake p { color: var(--ink-2); margin: 0 0 20px; }
+
+  .intake textarea {
+    width: 100%;
+    min-height: 190px;
+    padding: 14px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    resize: vertical;
+  }
+
+  .intake-actions { display: flex; gap: 9px; align-items: center; margin-top: 14px; }
+
+  .intake code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--surface-2);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .msg { font-size: 13px; color: var(--ink-2); }
+  .msg[data-tone="bad"] { color: var(--sev-4); }
+  .msg[data-tone="good"] { color: var(--done); }
+
+  .none { color: var(--ink-3); padding: 30px 0; text-align: center; font-size: 14px; }
+
+  .readonly-note {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 9px 28px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+  }
+
+  @media (max-width: 720px) {
+    .detail { grid-template-columns: 1fr; gap: 2px 0; }
+    .detail dt { padding-top: 9px; }
+    .masthead-inner, .sev-bar, .toolbar, main { padding-left: 18px; padding-right: 18px; }
+  }
+</style>
+
+<script type="application/json" id="scout-state">
+{"result":null,"triage":{},"notes":""}
+</script>
+
+<div id="app"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var SEVERITY = [
+    { label: 'Not a problem', varname: '--sev-0' },
+    { label: 'Cosmetic', varname: '--sev-1' },
+    { label: 'Minor', varname: '--sev-2' },
+    { label: 'Major', varname: '--sev-3' },
+    { label: 'Catastrophic', varname: '--sev-4' }
+  ];
+
+  var LAYERS = {
+    nielsen: "Nielsen's 10 Heuristics",
+    wcag: 'WCAG 2.1 AA',
+    platform: 'Platform Guidelines',
+    lens: 'Lens'
+  };
+
+  var STATES = [
+    { id: 'open', label: 'Open' },
+    { id: 'fixed', label: 'Fixed' },
+    { id: 'wontfix', label: "Won't fix" },
+    { id: 'discuss', label: 'Needs discussion' }
+  ];
+
+  // ---- state -------------------------------------------------------------
+
+  var state = { result: null, triage: {}, notes: '' };
+  try {
+    var raw = document.getElementById('scout-state').textContent;
+    var parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') state = Object.assign(state, parsed);
+  } catch (e) { /* keep the empty state */ }
+
+  var view = { severities: [], layers: [], hideResolved: false, expanded: {} };
+  try {
+    var saved = sessionStorage.getItem('scout-view');
+    if (saved) view = Object.assign(view, JSON.parse(saved));
+  } catch (e) { /* per-viewer nicety only */ }
+
+  function rememberView() {
+    try { sessionStorage.setItem('scout-view', JSON.stringify(view)); } catch (e) {}
+  }
+
+  var artifact = null;
+  var downloads = null;
+  var writable = true;
+  var busy = false;
+
+  var app = document.getElementById('app');
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function sevOf(n) { return SEVERITY[Math.max(0, Math.min(4, Math.round(n || 0)))]; }
+  function stateOf(id) { return state.triage[id] || 'open'; }
+  function isResolved(id) { var s = stateOf(id); return s === 'fixed' || s === 'wontfix'; }
+
+  // ---- rendering ---------------------------------------------------------
+
+  function findingsInView() {
+    var all = (state.result && state.result.findings) || [];
+    return all.filter(function (f) {
+      if (view.severities.length && view.severities.indexOf(f.severity) === -1) return false;
+      if (view.layers.length && view.layers.indexOf(f.layer) === -1) return false;
+      if (view.hideResolved && isResolved(f.id)) return false;
+      return true;
+    });
+  }
+
+  function renderCard(f, index) {
+    var sev = sevOf(f.severity);
+    var st = stateOf(f.id);
+    var open = !!view.expanded[f.id];
+    var out = [];
+
+    out.push('<article class="card" data-state="' + st + '" style="--sev: var(' + sev.varname + ')">');
+    out.push('<div class="card-top">');
+    out.push('<div class="num">' + index + '</div>');
+    out.push('<div class="card-main">');
+    out.push('<div class="card-title">' + esc(f.headline) + '</div>');
+    out.push('<div class="card-ref">');
+    out.push('<span class="sev-chip">Sev ' + f.severity + ' &middot; ' + esc(sev.label) + '</span>');
+    out.push('<span>' + esc(f.ref) + '</span>');
+    if (f.estimated) out.push('<span class="flag">estimated position</span>');
+    if (f.upgradeReason) out.push('<span class="flag">raised from ' + f.upgradedFrom + '</span>');
+    out.push('</div>');
+
+    // ref_meaning always shows: the audience includes people who do not know the frameworks.
+    if (f.ref_meaning) out.push('<p class="meaning">' + esc(f.ref_meaning) + '</p>');
+    if (f.crop) out.push('<img class="crop" src="' + esc(f.crop) + '" alt="' + esc(f.element) + '">');
+
+    if (open) {
+      out.push('<dl class="detail">');
+      out.push('<dt>Element</dt><dd>' + esc(f.element) + '</dd>');
+      out.push('<dt>What was seen</dt><dd>' + esc(f.observation) + '</dd>');
+      out.push('<dt>Why it matters</dt><dd>' + esc(f.why_it_matters) + '</dd>');
+      out.push('<dt>Fix</dt><dd>' + esc(f.recommendation) + '</dd>');
+      out.push('<dt>Effort</dt><dd>' + (f.effort === 'S' ? 'Hours' : f.effort === 'M' ? 'Days' : 'Weeks') + '</dd>');
+      if (f.also_touches && f.also_touches.length) {
+        out.push('<dt>Also touches</dt><dd>' + f.also_touches.map(esc).join('<br>') + '</dd>');
+      }
+      out.push('</dl>');
+      if (f.upgradeReason) {
+        out.push('<p class="upgrade"><strong>Raised to Sev ' + f.severity + '.</strong> ' + esc(f.upgradeReason) + '</p>');
+      }
+      if (f.tags && f.tags.length) {
+        out.push('<div class="tags">' + f.tags.map(function (t) {
+          return '<span class="tag">' + esc(t.key) + ': ' + esc(t.value) + '</span>';
+        }).join('') + '</div>');
+      }
+    }
+
+    out.push('</div></div>');
+
+    out.push('<div class="triage">');
+    out.push('<span class="triage-label">Status</span>');
+    STATES.forEach(function (s) {
+      out.push('<button class="state-btn" data-state="' + s.id + '" data-set="' + esc(f.id) + '"' +
+        ' aria-pressed="' + (st === s.id) + '"' + (writable ? '' : ' disabled') + '>' + s.label + '</button>');
+    });
+    out.push('<button class="expand" data-toggle="' + esc(f.id) + '">' + (open ? 'Less' : 'Detail') + '</button>');
+    out.push('</div>');
+    out.push('</article>');
+    return out.join('');
+  }
+
+  function render() {
+    if (!state.result) { renderIntake(); return; }
+
+    var r = state.result;
+    var all = r.findings || [];
+    var shown = findingsInView();
+    var numbering = {};
+    all.forEach(function (f, i) { numbering[f.id] = i + 1; });
+
+    var resolved = all.filter(function (f) { return isResolved(f.id); }).length;
+    var pct = all.length ? Math.round((resolved / all.length) * 100) : 0;
+
+    var counts = [4, 3, 2, 1, 0].map(function (level) {
+      return { level: level, n: all.filter(function (f) { return f.severity === level; }).length };
+    }).filter(function (c) { return c.n > 0; });
+
+    var out = [];
+
+    out.push('<header class="masthead">');
+    out.push('<div class="masthead-inner">');
+    out.push('<div>');
+    out.push('<div class="eyebrow">Screen evaluation</div>');
+    out.push('<h1>' + esc(r.screen_name || 'Untitled screen') + '</h1>');
+    out.push('<div class="subject-meta">' + esc([r.screen_type, r.platform].concat(r.lenses_applied || []).filter(Boolean).join('  /  ')) + '</div>');
+    out.push('</div>');
+    out.push('<div class="progress">');
+    out.push('<div class="progress-head"><span class="progress-count">' + resolved + ' / ' + all.length + '</span>' +
+      '<span class="progress-label">triaged</span></div>');
+    out.push('<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>');
+    out.push('</div>');
+    out.push('</div>');
+
+    out.push('<div class="sev-bar">');
+    counts.forEach(function (c) {
+      var on = view.severities.indexOf(c.level) !== -1;
+      out.push('<button class="sev-tile" data-sev="' + c.level + '" aria-pressed="' + on + '"' +
+        ' style="--tile: var(' + sevOf(c.level).varname + ')"><b>' + c.n + '</b><span>Sev ' + c.level + ' ' + esc(sevOf(c.level).label) + '</span></button>');
+    });
+    out.push('<span class="bar-spacer"></span>');
+    out.push('<button class="btn" data-hide aria-pressed="' + view.hideResolved + '">Hide resolved</button>');
+    out.push('</div>');
+
+    out.push('<div class="toolbar">');
+    Object.keys(LAYERS).forEach(function (key) {
+      var n = all.filter(function (f) { return f.layer === key; }).length;
+      if (!n) return;
+      var label = key === 'lens'
+        ? ((all.filter(function (f) { return f.layer === 'lens'; })[0] || {}).lens || LAYERS.lens)
+        : LAYERS[key];
+      out.push('<button class="btn" data-layer="' + key + '" aria-pressed="' + (view.layers.indexOf(key) !== -1) + '">' + esc(label) + '</button>');
+    });
+    out.push('<span class="bar-spacer"></span>');
+    out.push('<span class="filter-note">' + shown.length + ' of ' + all.length + ' shown</span>');
+    out.push('<button class="btn" data-export>Export markdown</button>');
+    out.push('<button class="btn" data-replace>Replace data</button>');
+    out.push('<span class="msg" id="msg"></span>');
+    out.push('</div>');
+    out.push('</header>');
+
+    if (!writable) {
+      out.push('<div class="readonly-note">Read-only view. You can filter and read, but triage changes will not save.</div>');
+    }
+
+    out.push('<main>');
+    if (!shown.length) {
+      out.push('<p class="none">Nothing matches these filters.</p>');
+    } else {
+      // Grouped by layer, severity descending inside each. The locked format.
+      Object.keys(LAYERS).forEach(function (key) {
+        var group = shown.filter(function (f) { return f.layer === key; })
+          .sort(function (a, b) { return b.severity - a.severity; });
+        if (!group.length) return;
+        var heading = key === 'lens' ? (group[0].lens || LAYERS.lens) : LAYERS[key];
+        out.push('<section class="layer">');
+        out.push('<div class="layer-head"><h2>' + esc(heading) + '</h2><span class="layer-count">' + group.length + '</span></div>');
+        out.push('<div class="cards">');
+        group.forEach(function (f) { out.push(renderCard(f, numbering[f.id])); });
+        out.push('</div></section>');
+      });
+    }
+    out.push('</main>');
+
+    app.innerHTML = out.join('');
+  }
+
+  function renderIntake() {
+    app.innerHTML =
+      '<div class="intake">' +
+      '<div class="eyebrow">Scout</div>' +
+      '<h2>Load an evaluation</h2>' +
+      '<p>Run Scout in Figma, press <code>JSON</code>, and paste the file here. ' +
+      'Everyone who opens this page then sees the same findings, and triage decisions are shared.</p>' +
+      '<textarea id="paste" placeholder=\'{"screen_name": "...", "findings": [ ... ]}\'></textarea>' +
+      '<div class="intake-actions">' +
+      '<button class="btn primary" id="load">Load findings</button>' +
+      '<span class="msg" id="msg"></span>' +
+      '</div></div>';
+  }
+
+  function say(text, tone) {
+    var el = document.getElementById('msg');
+    if (!el) return;
+    el.textContent = text;
+    el.setAttribute('data-tone', tone || '');
+    if (tone !== 'bad') setTimeout(function () { if (el.textContent === text) el.textContent = ''; }, 3000);
+  }
+
+  // ---- persistence -------------------------------------------------------
+
+  function documentFor(next) {
+    // TEMPLATE is only the authored region, so the platform's own wrapper is never
+    // re-embedded. Republishing the served page verbatim nests it once per save.
+    var json = JSON.stringify(next).replace(/<\//g, '<\\/');
+    var authored = TEMPLATE.replace(
+      /(<script type="application\/json" id="scout-state">)[\s\S]*?(<\/script>)/i,
+      function (_m, open, close) { return open + '\n' + json + '\n' + close; }
+    );
+    return '<!doctype html>\n<html lang="en">\n<head>\n' +
+      '<meta charset="utf-8">\n' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+      '</head>\n<body>\n' + authored + '\n</body>\n</html>';
+  }
+
+  async function save(next) {
+    state = next;
+    render();
+    if (!artifact) return;
+    if (!TEMPLATE) { say('Saving is unavailable: the page source could not be read.', 'bad'); return; }
+    if (busy) return;
+    busy = true;
+    try {
+      await artifact.publish(documentFor(next));
+    } catch (err) {
+      var code = err && err.code;
+      if (code === 'conflict') {
+        // Someone published first. Every view is already reloading to the winner.
+        return;
+      }
+      if (code === 'not_writer' || code === 'not_granted' || code === 'not_declared') {
+        writable = false;
+        render();
+        say('This view is read-only, so the change was not saved.', 'bad');
+        return;
+      }
+      if (code === 'rate_limited') { say('Saving too fast. Give it a moment.', 'bad'); return; }
+      say('Could not save that change.', 'bad');
+    } finally {
+      busy = false;
+    }
+  }
+
+  function setTriage(id, value) {
+    var triage = Object.assign({}, state.triage);
+    if (value === 'open') delete triage[id]; else triage[id] = value;
+    save(Object.assign({}, state, { triage: triage }));
+  }
+
+  // ---- export ------------------------------------------------------------
+
+  function toMarkdown() {
+    var r = state.result;
+    var lines = ['# Screen eval: ' + (r.screen_name || 'Untitled'), ''];
+    lines.push('**Screen type:** ' + (r.screen_type || 'unknown'));
+    lines.push('**Platform:** ' + (r.platform || 'unknown'));
+    if (r.lenses_applied && r.lenses_applied.length) lines.push('**Lenses:** ' + r.lenses_applied.join(', '));
+    lines.push('');
+
+    if (r.whats_working && r.whats_working.length) {
+      lines.push("## What's working", '');
+      r.whats_working.forEach(function (w) { lines.push('- ' + w); });
+      lines.push('');
+    }
+
+    lines.push('## Findings', '');
+    Object.keys(LAYERS).forEach(function (key) {
+      var group = (r.findings || []).filter(function (f) { return f.layer === key; })
+        .sort(function (a, b) { return b.severity - a.severity; });
+      if (!group.length) return;
+      lines.push('### ' + (key === 'lens' ? (group[0].lens || 'Lens') : LAYERS[key]), '');
+      group.forEach(function (f) {
+        var st = stateOf(f.id);
+        var label = STATES.filter(function (s) { return s.id === st; })[0].label;
+        lines.push('#### [Sev ' + f.severity + '] ' + f.ref + ': ' + f.headline + '  `' + label + '`', '');
+        lines.push('*' + f.ref_meaning + '*', '');
+        lines.push('**Element:** ' + f.element);
+        lines.push('**What was seen:** ' + f.observation);
+        lines.push('**Why it matters:** ' + f.why_it_matters);
+        lines.push('**Fix:** ' + f.recommendation);
+        lines.push('**Effort:** ' + f.effort);
+        if (f.upgradeReason) lines.push('**Raised to Sev ' + f.severity + ':** ' + f.upgradeReason);
+        lines.push('');
+      });
+    });
+
+    if (r.prioritised && r.prioritised.length) {
+      lines.push('## Fix these first', '');
+      r.prioritised.forEach(function (p, i) { lines.push((i + 1) + '. ' + p); });
+      lines.push('');
+    }
+    if (r.open_questions && r.open_questions.length) {
+      lines.push('## Open questions', '');
+      r.open_questions.forEach(function (q, i) { lines.push((i + 1) + '. ' + q); });
+    }
+    return lines.join('\n');
+  }
+
+  async function exportMarkdown() {
+    var md = toMarkdown();
+    var name = ((state.result.screen_name || 'screen').replace(/[^a-z0-9]+/gi, '-').toLowerCase()) + '-eval.md';
+    if (downloads) {
+      try {
+        await downloads.save({ filename: name, data: md });
+        say('Saved ' + name, 'good');
+        return;
+      } catch (e) { /* fall through to the clipboard */ }
+    }
+    try {
+      await navigator.clipboard.writeText(md);
+      say('Copied the report to your clipboard', 'good');
+    } catch (e) {
+      say('Could not export here. Copy the text from the page instead.', 'bad');
+    }
+  }
+
+  // ---- events ------------------------------------------------------------
+
+  app.addEventListener('click', function (e) {
+    var t = e.target.closest('button');
+    if (!t) return;
+
+    if (t.id === 'load') {
+      var box = document.getElementById('paste');
+      var data;
+      try { data = JSON.parse(box.value); } catch (err) {
+        say('That is not valid JSON. Paste the whole file.', 'bad');
+        return;
+      }
+      var result = data && data.result ? data.result : data;
+      if (!result || !Array.isArray(result.findings)) {
+        say('No findings in that file. Use the JSON button in the Scout plugin.', 'bad');
+        return;
+      }
+      save({ result: result, triage: {}, notes: '' });
+      return;
+    }
+
+    if (t.hasAttribute('data-set')) { setTriage(t.getAttribute('data-set'), t.getAttribute('data-state')); return; }
+
+    if (t.hasAttribute('data-toggle')) {
+      var id = t.getAttribute('data-toggle');
+      view.expanded[id] = !view.expanded[id];
+      rememberView(); render();
+      return;
+    }
+
+    if (t.hasAttribute('data-sev')) {
+      var lvl = Number(t.getAttribute('data-sev'));
+      var i = view.severities.indexOf(lvl);
+      if (i === -1) view.severities.push(lvl); else view.severities.splice(i, 1);
+      rememberView(); render();
+      return;
+    }
+
+    if (t.hasAttribute('data-layer')) {
+      var key = t.getAttribute('data-layer');
+      var j = view.layers.indexOf(key);
+      if (j === -1) view.layers.push(key); else view.layers.splice(j, 1);
+      rememberView(); render();
+      return;
+    }
+
+    if (t.hasAttribute('data-hide')) { view.hideResolved = !view.hideResolved; rememberView(); render(); return; }
+    if (t.hasAttribute('data-export')) { exportMarkdown(); return; }
+    if (t.hasAttribute('data-replace')) {
+      if (!writable) { say('This view is read-only.', 'bad'); return; }
+      state = { result: null, triage: {}, notes: '' };
+      render();
+      return;
+    }
+  });
+
+  // ---- boot --------------------------------------------------------------
+
+  var TEMPLATE = '';
+
+  // Read back the served document and keep only what this file authored. The
+  // markers are the boundary; everything outside them belongs to the platform.
+  fetch(location.href, { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.text() : ''; })
+    .then(function (html) {
+      var start = html.indexOf('<!--scout:begin-->');
+      var end = html.lastIndexOf('<!--scout:end-->');
+      if (start === -1 || end === -1 || end <= start) return;
+      var authored = html.slice(start, end + '<!--scout:end-->'.length);
+      if (/id="scout-state"/.test(authored)) TEMPLATE = authored;
+    })
+    .catch(function () { /* save() reports it if a write is attempted */ });
+
+  render();
+
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('artifact').then(function (ns) {
+      artifact = ns;
+      if (!ns) { writable = false; render(); }
+    }).catch(function () { writable = false; render(); });
+    window.claude.use('downloads').then(function (ns) { downloads = ns; }).catch(function () {});
+  }
+})();
+</script>
+<!--scout:end-->

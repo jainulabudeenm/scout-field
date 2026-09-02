@@ -1,0 +1,20 @@
+{
+  "name": "Scout",
+  "id": "scout-field",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": [
+    "figma"
+  ],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://scout-field.jain-sathak.workers.dev"
+    ],
+    "reasoning": "Sends the selected frame to Scout's evaluation proxy and receives findings back.",
+    "devAllowedDomains": [
+      "http://localhost:8787"
+    ]
+  }
+}

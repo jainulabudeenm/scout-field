@@ -1,0 +1,259 @@
+{
+  "result": {
+    "screen_name": "Checkout",
+    "screen_type": "form",
+    "platform": "ios",
+    "lenses_applied": [],
+    "assumptions": [
+      "Evaluated as an iOS checkout modal screen in production build."
+    ],
+    "whats_working": [
+      "The order breakdown displays itemized subtotals and fees clearly before final payment submission. *(H1 Visibility of system status)*",
+      "Delivery slot confirmation is explicitly shown with clear status text. *(H1 Visibility of system status)*"
+    ],
+    "findings": [
+      {
+        "id": "F1",
+        "layer": "nielsen",
+        "lens": "",
+        "ref": "H9 Help users recognise, diagnose, and recover from errors",
+        "ref_meaning": "Error text and instructions should use plain language and guide the user on what to do, without technical jargon.",
+        "headline": "Raw backend error code exposed in subheader instructions",
+        "severity": 3,
+        "element": "Subheader instruction copy *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 32,
+          "y": 220,
+          "w": 716,
+          "h": 65
+        },
+        "observation": "Instruction text displays internal backend code: 'Review your order before you continue. ERR_CODE 4012 may appear.'",
+        "why_it_matters": "Surfacing backend error codes prior to an error occurring confuses users and damages trust right before payment.",
+        "recommendation": "Remove 'ERR_CODE 4012 may appear' from instruction copy. Use clear text like 'Please review your order details before proceeding.'",
+        "effort": "S",
+        "also_touches": [
+          "H2 Match between system and the real world: Exposes technical system codes rather than real-world concepts."
+        ],
+        "tags": []
+      },
+      {
+        "id": "F3",
+        "layer": "nielsen",
+        "lens": "",
+        "ref": "H9 Help users recognise, diagnose, and recover from errors",
+        "ref_meaning": "Error messages must state what is wrong in simple terms and explain how to fix it.",
+        "headline": "Generic error message fails to explain card input error",
+        "severity": 3,
+        "element": "Inline error text below Card number field *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 32,
+          "y": 910,
+          "w": 200,
+          "h": 30
+        },
+        "observation": "Red text below Card number input displays only 'Invalid input'.",
+        "why_it_matters": "The message does not specify what makes the input invalid (e.g. incorrect digit count), leaving the user stuck without actionable guidance.",
+        "recommendation": "Update error text to specify the resolution, e.g. 'Enter a 16-digit card number'. Highlight the card field border in red.",
+        "effort": "S",
+        "also_touches": [
+          "WCAG 3.3.3 Error Suggestion: Fails to provide helpful suggestions to correct input errors."
+        ],
+        "tags": []
+      },
+      {
+        "id": "F4",
+        "layer": "nielsen",
+        "lens": "",
+        "ref": "H2 Match between system and the real world",
+        "ref_meaning": "The screen should use natural, familiar language instead of abbreviated technical terms.",
+        "headline": "Service fee line item uses truncated jargon abbreviation",
+        "severity": 2,
+        "element": "Service fee line item label *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 32,
+          "y": 530,
+          "w": 200,
+          "h": 40
+        },
+        "observation": "The line item label is written as 'Svc. chg.'.",
+        "why_it_matters": "Abbreviated terms create ambiguity about what fee is being charged, reducing clarity during checkout.",
+        "recommendation": "Spell out the line item completely as 'Service fee' or 'Service charge'.",
+        "effort": "S",
+        "also_touches": [],
+        "tags": []
+      },
+      {
+        "id": "F7",
+        "layer": "nielsen",
+        "lens": "",
+        "ref": "H6 Recognition rather than recall",
+        "ref_meaning": "Information and controls should remain visible so users do not have to memorize input context.",
+        "headline": "Form fields use inline placeholders as sole field labels",
+        "severity": 2,
+        "element": "Card number and Promo code input fields *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 32,
+          "y": 825,
+          "w": 716,
+          "h": 250
+        },
+        "observation": "Card number and Promo code inputs rely on placeholder text inside the input box with no static label above.",
+        "why_it_matters": "Placeholder text disappears when the user begins typing, forcing them to recall what data belongs in the field.",
+        "recommendation": "Add persistent text labels above each field or implement floating labels.",
+        "effort": "S",
+        "also_touches": [
+          "WCAG 3.3.2 Labels or Instructions: Form fields lack visible persistent labels."
+        ],
+        "tags": []
+      },
+      {
+        "id": "F8",
+        "layer": "nielsen",
+        "lens": "",
+        "ref": "H8 Aesthetic and minimalist design",
+        "ref_meaning": "Screens should present complete, unclipped copy without visual clutter or broken text layouts.",
+        "headline": "Disclaimer text truncated at screen right edge",
+        "severity": 2,
+        "element": "Bottom right disclaimer text *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 620,
+          "y": 1515,
+          "w": 140,
+          "h": 30
+        },
+        "observation": "Legal copy at bottom right is cut off mid-word as 'By continuing yo'.",
+        "why_it_matters": "Truncated disclaimer text hides potential terms of service and gives the screen an unpolished appearance.",
+        "recommendation": "Wrap disclaimer text to multiple lines or adjust side margins so the entire string is visible.",
+        "effort": "S",
+        "also_touches": [],
+        "tags": []
+      },
+      {
+        "id": "F2",
+        "layer": "wcag",
+        "lens": "",
+        "ref": "1.4.3 Contrast (Minimum)",
+        "ref_meaning": "Text must have a contrast ratio of at least 4.5:1 against its background so it can be easily read.",
+        "headline": "Light grey body copy and labels fail contrast requirements",
+        "severity": 3,
+        "element": "Subheader text and breakdown labels *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 32,
+          "y": 220,
+          "w": 716,
+          "h": 350
+        },
+        "observation": "Subheader text and line item labels ('Item subtotal', 'Convenience', 'Svc. chg.') use light grey text on white background with a contrast ratio of ~2.8:1.",
+        "why_it_matters": "Low contrast prevents users with visual impairments or operating in outdoor light from reading order summary details.",
+        "recommendation": "Change grey text color to a darker hex code (e.g. #595959 or darker) to achieve at least 4.5:1 contrast ratio.",
+        "effort": "S",
+        "also_touches": [],
+        "tags": []
+      },
+      {
+        "id": "F6",
+        "layer": "wcag",
+        "lens": "",
+        "ref": "2.5.5 Target Size",
+        "ref_meaning": "Touch targets must be at least 44 by 44 points so users can easily tap them without errors.",
+        "headline": "Modal close icon target size is smaller than 44x44 pt requirement",
+        "severity": 3,
+        "element": "Top-right close button *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 710,
+          "y": 65,
+          "w": 35,
+          "h": 35
+        },
+        "observation": "The top-right 'x' dismiss button icon measures ~25x25 px with no extended touch padding.",
+        "why_it_matters": "Small touch target leads to mis-taps when trying to close the modal, frustrating users.",
+        "recommendation": "Increase the hit area surrounding the close icon to a minimum of 44x44 pt.",
+        "effort": "S",
+        "also_touches": [
+          "iOS HIG Touch targets: Fails iOS HIG minimum tap target standard of 44x44 pt."
+        ],
+        "tags": []
+      },
+      {
+        "id": "F5",
+        "layer": "platform",
+        "lens": "",
+        "ref": "iOS HIG Component Semantics",
+        "ref_meaning": "Action buttons should reflect their hierarchy, and primary CTAs must present complete text without truncation.",
+        "headline": "Primary pay CTA text truncated and secondary cancel button has dominant red styling",
+        "severity": 3,
+        "element": "Bottom action buttons container *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 32,
+          "y": 1570,
+          "w": 716,
+          "h": 90
+        },
+        "observation": "The main CTA button text is truncated to 'Pay ₹1,3...', while the 'Cancel' button is styled as a full solid bright red block.",
+        "why_it_matters": "Truncating the total amount on the pay button hides final payment costs. High-contrast red styling on 'Cancel' gives equal weight to destructive action, causing potential mis-taps.",
+        "recommendation": "Style 'Cancel' as a plain text or outline secondary button. Ensure the primary button has sufficient space to display full text 'Pay ₹1,311'.",
+        "effort": "S",
+        "also_touches": [
+          "H5 Error prevention: Co-locating equal-weight bright red cancel and green pay buttons increases accidental cancellation.",
+          "H8 Aesthetic and minimalist design: Button text truncation damages readability and visual balance."
+        ],
+        "tags": []
+      },
+      {
+        "id": "F9",
+        "layer": "platform",
+        "lens": "",
+        "ref": "iOS HIG Touch targets & spacing",
+        "ref_meaning": "Controls and option chips must meet height and spacing guidelines to enable accurate touch input.",
+        "headline": "Option chips fail height minimum and lack clear visual state",
+        "severity": 2,
+        "element": "Option chips 'Express', 'Gift wrap', 'Save card' *(estimated position)*",
+        "node_id": "",
+        "bbox": {
+          "x": 32,
+          "y": 730,
+          "w": 460,
+          "h": 60
+        },
+        "observation": "Chips have a height of ~35px (~17.5pt) and sit 8px apart without clear selected indicators.",
+        "why_it_matters": "Under-sized touch targets increase tap errors, and ambiguous styling makes it unclear whether options are toggled on or off.",
+        "recommendation": "Increase chip height to at least 44pt and add clear selected/unselected visual states (e.g. checkmarks or filled background).",
+        "effort": "S",
+        "also_touches": [
+          "WCAG 2.5.5 Target Size: Interactive chips fall below 44x44 pt minimum target size."
+        ],
+        "tags": []
+      }
+    ],
+    "prioritised": [
+      "1. [Sev 3] Primary pay CTA text truncated and secondary cancel button has dominant red styling - Style Cancel as secondary button and display full text Pay ₹1,311.",
+      "2. [Sev 3] Raw backend error code exposed in subheader instructions - Remove ERR_CODE 4012 from user-facing instructions.",
+      "3. [Sev 3] Generic error message fails to explain card input error - Provide actionable error copy like Enter a valid 16-digit card number.",
+      "4. [Sev 3] Light grey body copy and labels fail contrast requirements - Darken secondary text and labels to meet 4.5:1 contrast minimum.",
+      "5. [Sev 3] Modal close icon target size is smaller than 44x44 pt requirement - Expand touch target area around close icon to at least 44x44 pt.",
+      "6. [Sev 2] Service fee line item uses truncated jargon abbreviation - Expand Svc. chg. to Service charge.",
+      "7. [Sev 2] Form fields use inline placeholders as sole field labels - Add permanent external labels above input fields.",
+      "8. [Sev 2] Option chips fail height minimum and lack clear visual state - Increase chip height to 44pt and clarify selected state.",
+      "9. [Sev 2] Disclaimer text truncated at screen right edge - Wrap legal disclaimer copy to keep text within viewable bounds."
+    ],
+    "open_questions": [
+      "1. Is the red Cancel button intentionally styled with primary solid background fill, or was it meant to be a secondary text action?",
+      "2. What specific card validation triggers the 'Invalid input' error state on screen load?"
+    ],
+    "report_markdown": "# Screen Eval: Checkout\n\n**Screen type:** form\n**Platform:** iOS\n**Source:** Production\n**Lenses applied:** none\n**Evaluated:** 2025-05-15\n\n---\n\n## Assumptions made\n\nEvaluated as an iOS checkout modal screen in production build.\n\n---\n\n## What's working\n\n- The order breakdown displays itemized subtotals and fees clearly before final payment submission. *(H1 Visibility of system status)*\n- Delivery slot confirmation is explicitly shown with clear status text. *(H1 Visibility of system status)*\n\n---\n\n## Findings\n\n### Layer 1: Nielsen's 10 Heuristics\n\n#### [Sev 3] H9 - Help users recognise, diagnose, and recover from errors: Raw backend error code exposed in subheader instructions\n\n**What H9 means:** Error text and instructions should use plain language and guide the user on what to do, without technical jargon.\n\n**Element:** Subheader instruction copy *(estimated position)*\n**Observation:** Instruction text displays internal backend code: \"Review your order before you continue. ERR_CODE 4012 may appear.\"\n**Why it's a problem:** Surfacing backend error codes prior to an error occurring confuses users and damages trust right before payment.\n**Recommendation:** Remove \"ERR_CODE 4012 may appear\" from instruction copy. Use clear text like \"Please review your order details before proceeding.\"\n**Effort hint:** S\n**Also touches:**\n- H2 Match between system and the real world: Exposes technical system codes rather than real-world concepts.\n\n#### [Sev 3] H9 - Help users recognise, diagnose, and recover from errors: Generic error message fails to explain card input error\n\n**What H9 means:** Error messages must state what is wrong in simple terms and explain how to fix it.\n\n**Element:** Inline error text below Card number field *(estimated position)*\n**Observation:** Red text below Card number input displays only \"Invalid input\".\n**Why it's a problem:** The message does not specify what makes the input invalid (e.g. incorrect digit count), leaving the user stuck without actionable guidance.\n**Recommendation:** Update error text to specify the resolution, e.g. \"Enter a 16-digit card number\". Highlight the card field border in red.\n**Effort hint:** S\n**Also touches:**\n- WCAG 3.3.3 Error Suggestion: Fails to provide helpful suggestions to correct input errors.\n\n#### [Sev 2] H2 - Match between system and the real world: Service fee line item uses truncated jargon abbreviation\n\n**What H2 means:** The screen should use natural, familiar language instead of abbreviated technical terms.\n\n**Element:** Service fee line item label *(estimated position)*\n**Observation:** The line item label is written as \"Svc. chg.\".\n**Why it's a problem:** Abbreviated terms create ambiguity about what fee is being charged, reducing clarity during checkout.\n**Recommendation:** Spell out the line item completely as \"Service fee\" or \"Service charge\".\n**Effort hint:** S\n\n#### [Sev 2] H6 - Recognition rather than recall: Form fields use inline placeholders as sole field labels\n\n**What H6 means:** Information and controls should remain visible so users do not have to memorize input context.\n\n**Element:** Card number and Promo code input fields *(estimated position)*\n**Observation:** Card number and Promo code inputs rely on placeholder text inside the input box with no static label above.\n**Why it's a problem:** Placeholder text disappears when the user begins typing, forcing them to recall what data belongs in the field.\n**Recommendation:** Add persistent text labels above each field or implement floating labels.\n**Effort hint:** S\n**Also touches:**\n- WCAG 3.3.2 Labels or Instructions: Form fields lack visible persistent labels.\n\n#### [Sev 2] H8 - Aesthetic and minimalist design: Disclaimer text truncated at screen right edge\n\n**What H8 means:** Screens should present complete, unclipped copy without visual clutter or broken text layouts.\n\n**Element:** Bottom right disclaimer text *(estimated position)*\n**Observation:** Legal copy at bottom right is cut off mid-word as \"By continuing yo\".\n**Why it's a problem:** Truncated disclaimer text hides potential terms of service and gives the screen an unpolished appearance.\n**Recommendation:** Wrap disclaimer text to multiple lines or adjust side margins so the entire string is visible.\n**Effort hint:** S\n\n---\n\n### Layer 2: WCAG 2.1 AA\n\n#### [Sev 3] 1.4.3 - Contrast (Minimum): Light grey body copy and labels fail contrast requirements\n\n**What this criterion means:** Text must have a contrast ratio of at least 4.5:1 against its background so it can be easily read.\n\n**Element:** Subheader text and breakdown labels *(estimated position)*\n**Observation:** Subheader text and line item labels ('Item subtotal', 'Convenience', 'Svc. chg.') use light grey text on white background with a contrast ratio of ~2.8:1.\n**Why it's a problem:** Low contrast prevents users with visual impairments or operating in outdoor light from reading order summary details.\n**Recommendation:** Change grey text color to a darker hex code (e.g. #595959 or darker) to achieve at least 4.5:1 contrast ratio.\n**Effort hint:** S\n\n#### [Sev 3] 2.5.5 - Target Size: Modal close icon target size is smaller than 44x44 pt requirement\n\n**What this criterion means:** Touch targets must be at least 44 by 44 points so users can easily tap them without errors.\n\n**Element:** Top-right close button *(estimated position)*\n**Observation:** The top-right 'x' dismiss button icon measures ~25x25 px with no extended touch padding.\n**Why it's a problem:** Small touch target leads to mis-taps when trying to close the modal, frustrating users.\n**Recommendation:** Increase the hit area surrounding the close icon to a minimum of 44x44 pt.\n**Effort hint:** S\n**Also touches:**\n- iOS HIG Touch targets: Fails iOS HIG minimum tap target standard of 44x44 pt.\n\n---\n\n### Layer 3: Platform Guidelines\n\n#### [Sev 3] iOS HIG Component Semantics: Primary pay CTA text truncated and secondary cancel button has dominant red styling\n\n**What this means:** Action buttons should reflect their hierarchy, and primary CTAs must present complete text without truncation.\n\n**Element:** Bottom action buttons container *(estimated position)*\n**Observation:** The main CTA button text is truncated to 'Pay ₹1,3...', while the 'Cancel' button is styled as a full solid bright red block.\n**Why it's a problem:** Truncating the total amount on the pay button hides final payment costs. High-contrast red styling on 'Cancel' gives equal weight to destructive action, causing potential mis-taps.\n**Recommendation:** Style 'Cancel' as a plain text or outline secondary button. Ensure the primary button has sufficient space to display full text 'Pay ₹1,311'.\n**Effort hint:** S\n**Also touches:**\n- H5 Error prevention: Co-locating equal-weight bright red cancel and green pay buttons increases accidental cancellation.\n- H8 Aesthetic and minimalist design: Button text truncation damages readability and visual balance.\n\n#### [Sev 2] iOS HIG Touch targets & spacing: Option chips fail height minimum and lack clear visual state\n\n**What this means:** Controls and option chips must meet height and spacing guidelines to enable accurate touch input.\n\n**Element:** Option chips 'Express', 'Gift wrap', 'Save card' *(estimated position)*\n**Observation:** Chips have a height of ~35px (~17.5pt) and sit 8px apart without clear selected indicators.\n**Why it's a problem:** Under-sized touch targets increase tap errors, and ambiguous styling makes it unclear whether options are toggled on or off.\n**Recommendation:** Increase chip height to at least 44pt and add clear selected/unselected visual states (e.g. checkmarks or filled background).\n**Effort hint:** S\n**Also touches:**\n- WCAG 2.5.5 Target Size: Interactive chips fall below 44x44 pt minimum target size.\n\n---\n\n## Recommendations, prioritised\n\n1. [Sev 3] Primary pay CTA text truncated and secondary cancel button has dominant red styling - Style Cancel as secondary button and display full text Pay ₹1,311.\n2. [Sev 3] Raw backend error code exposed in subheader instructions - Remove ERR_CODE 4012 from user-facing instructions.\n3. [Sev 3] Generic error message fails to explain card input error - Provide actionable error copy like Enter a valid 16-digit card number.\n4. [Sev 3] Light grey body copy and labels fail contrast requirements - Darken secondary text and labels to meet 4.5:1 contrast minimum.\n5. [Sev 3] Modal close icon target size is smaller than 44x44 pt requirement - Expand touch target area around close icon to at least 44x44 pt.\n6. [Sev 2] Service fee line item uses truncated jargon abbreviation - Expand Svc. chg. to Service charge.\n7. [Sev 2] Form fields use inline placeholders as sole field labels - Add permanent external labels above input fields.\n8. [Sev 2] Option chips fail height minimum and lack clear visual state - Increase chip height to 44pt and clarify selected state.\n9. [Sev 2] Disclaimer text truncated at screen right edge - Wrap legal disclaimer copy to keep text within viewable bounds.\n\n---\n\n## Open questions\n\n1. Is the red Cancel button intentionally styled with primary solid background fill, or was it meant to be a secondary text action?\n2. What specific card validation triggers the 'Invalid input' error state on screen load?\n"
+  },
+  "usage": {
+    "input": 12029,
+    "output": 5622,
+    "cacheRead": 7440
+  },
+  "provider": "gemini"
+}

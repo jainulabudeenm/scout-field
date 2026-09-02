@@ -1,0 +1,21 @@
+{
+  "name": "scout-worker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run lenses && wrangler dev",
+    "deploy": "npm run lenses && wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "lenses": "node scripts/build-lenses.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.122.0",
+    "zod": "^3.24.1",
+    "zod-to-json-schema": "^3.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260828.1",
+    "typescript": "^5.7.3",
+    "wrangler": "^4.127.0"
+  }
+}

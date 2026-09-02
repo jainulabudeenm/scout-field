@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# Worker secrets — never commit
+.dev.vars
+.wrangler/
+
+# The public edition ships no client packs. A pack dropped in here to try locally
+# stays local: it is somebody's internal design principles and must not be committed.
+# The template is the exception, because it is what tells a reader how to write one.
+reference/lens/*.md
+!reference/lens/_TEMPLATE.md
+worker/src/lenses.generated.ts
