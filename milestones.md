@@ -159,16 +159,23 @@ one)? The Worker matches how everything else here works.
 
 ---
 
-## Before publishing: swap the Gemini keys · BLOCKING
+## Swap the Gemini keys · blocks F1, not publishing
 
-The keys on `scout-field` today are the same three the internal edition uses. Free-tier quota is
-usually counted per Google project, so strangers spending free runs can drain the quota the
+`scout-field` runs the same three Gemini keys as the internal edition, and free-tier quota is
+usually counted per Google project. So a stranger spending those keys spends the quota the
 internal demo depends on.
 
-- [ ] New keys on a **separate Google account** before the Community listing goes live
+**There is no exposure today.** The gate rejects any request carrying neither a key nor the
+access code, so a visitor cannot reach the maintainer's key at all. They bring their own or they
+get a 401. Publishing does not change that.
+
+**It becomes blocking the moment F1 ships**, because that is what lets a keyless request through.
+
+- [ ] New keys on a **separate Google account**, before first-run-free goes live
 - [ ] `npx wrangler secret put GEMINI_API_KEY` on `scout-field` only
 
-Not urgent while the plugin is unpublished, because nobody can reach the free run yet.
+Zain, 3 Sep: deliberately deferred. The listing is for a portfolio and an interview, not a launch,
+so the traffic that would make this matter is not coming.
 
 ---
 
