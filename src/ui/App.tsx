@@ -491,9 +491,9 @@ export default function App() {
         {pickedStarter && (
           <div className="notice starter">
             <div>
-              Design principles are applied to <strong>{pickedStarter.name}</strong> already. Who
-              uses it and what the flows are has not been written yet, so findings will be about
-              how the screen is built rather than who it is for.
+              <strong>{pickedStarter.name}</strong> is a starting point, not a finished lens. It
+              carries what holds across this kind of product, but it does not know who your users
+              are or what your flows look like. Tell it below and this run uses that too.
               <textarea
                 rows={3}
                 value={lensNotes}

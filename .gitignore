@@ -12,4 +12,5 @@ dist/
 # The template is the exception, because it is what tells a reader how to write one.
 reference/lens/*.md
 !reference/lens/_TEMPLATE.md
+!reference/lens/starter-*.md
 worker/src/lenses.generated.ts
