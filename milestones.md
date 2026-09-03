@@ -114,6 +114,29 @@ evaluation without being told anything.
 
 ---
 
+## Settled: lenses are cut by persona, not by industry
+
+3 Sep 2026. A first attempt shipped four **domain** packs: Shopping, Booking, Money, Dashboards.
+Zain rejected the axis, and he was right. Two reasons, both checkable:
+
+1. **Domain packs overlap.** A checkout screen in a payments app is Shopping and Money at once,
+   and the picker only takes one answer. Persona packs do not overlap: a screen serves a worker,
+   a customer or a manager.
+2. **The template asks "who this lens is for".** Domain names answer a different question, so the
+   file fought its own structure.
+
+The domain facts worth keeping were never lenses. "This screen moves money" and "this cannot be
+undone" are **severity amplifiers**, and they now live inside the persona packs, where the
+template already had a slot for them.
+
+Shipped: `starter-work-app`, `starter-consumer-app`, `starter-manager-app`. They generalise the
+internal edition's Driver / Customer / Owner split to any company.
+
+**Reopens if** real use shows a domain rule that cannot be expressed as an amplifier inside a
+persona pack. Then it is a fourth pack, argued on that evidence, not a return to the grid.
+
+---
+
 ## L1. Lens packs a stranger can actually use · ~3h
 
 The internal edition ships lens packs for named apps. This edition ships none, which is correct,
@@ -123,7 +146,7 @@ Zain, 3 Sep: offer **starting points, not finished lenses**. A handful of neutra
 user picks and then edits, for example e-commerce, booking, fintech, a dashboard. They are
 examples to shape, not products to select.
 
-- [ ] Two or three neutral templates in `reference/lens/`, marked `<!-- starter -->`
+- [x] Three neutral templates in `reference/lens/`, marked `<!-- starter -->`
 - [ ] Settings offers "start from a template" alongside "paste your own"
 - [ ] A template says out loud that it is generic and asks the user to add their persona
 
