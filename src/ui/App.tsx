@@ -568,6 +568,7 @@ export default function App() {
 
       {result && (
         <>
+          <Report result={result} />
           <LensChips
             available={allLenses}
             applied={result.lenses_applied}
@@ -575,6 +576,16 @@ export default function App() {
             status={lensStage}
             onApply={applyLens}
             onRemove={removeLens}
+          />
+          <Chat
+            turns={turns}
+            busy={asking}
+            applying={applying}
+            pending={turns.filter((t) => t.role === 'user').length > foldedIn}
+            updateNote={updateNote}
+            openQuestions={result.open_questions.length}
+            onAsk={ask}
+            onApply={applyAnswers}
           />
           <Actions
             result={result}
@@ -636,17 +647,6 @@ export default function App() {
                 },
               });
             }}
-          />
-          <Report result={result} />
-          <Chat
-            turns={turns}
-            busy={asking}
-            applying={applying}
-            pending={turns.filter((t) => t.role === 'user').length > foldedIn}
-            updateNote={updateNote}
-            openQuestions={result.open_questions.length}
-            onAsk={ask}
-            onApply={applyAnswers}
           />
         </>
       )}

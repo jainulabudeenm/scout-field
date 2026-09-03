@@ -17,47 +17,6 @@ export default function Report({ result }: { result: EvalResult }) {
         </span>
       </div>
 
-      {result.whats_working.length > 0 && (
-        <section>
-          <h3>What's working</h3>
-          <ul className="plain">
-            {result.whats_working.map((w, i) => (
-              <li key={i}>{w}</li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {result.assumptions.length > 0 && (
-        <section>
-          <h3>Assumptions</h3>
-          <ul className="plain">
-            {result.assumptions.map((a, i) => (
-              <li key={i}>{a}</li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {/* Grouped by layer, sorted by severity inside each. This is the locked format. */}
-      {ORDER.map((layer) => {
-        const group = result.findings
-          .filter((f) => f.layer === layer)
-          .sort((a, b) => b.severity - a.severity);
-        if (group.length === 0) return null;
-        return (
-          <section key={layer}>
-            <h3>
-              {layer === 'lens' && group[0].lens ? group[0].lens : LAYER_LABEL[layer]}
-              <span className="count">{group.length}</span>
-            </h3>
-            {group.map((f) => (
-              <Finding key={f.id} finding={f} index={numbering.get(f.id) ?? 0} />
-            ))}
-          </section>
-        );
-      })}
-
       {result.prioritised.length > 0 && (
         <section>
           <h3>Fix these first</h3>
@@ -79,6 +38,47 @@ export default function Report({ result }: { result: EvalResult }) {
           </ol>
         </section>
       )}
+
+      {result.assumptions.length > 0 && (
+        <section>
+          <h3>Assumptions</h3>
+          <ul className="plain">
+            {result.assumptions.map((a, i) => (
+              <li key={i}>{a}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {ORDER.map((layer) => {
+        const group = result.findings
+          .filter((f) => f.layer === layer)
+          .sort((a, b) => b.severity - a.severity);
+        if (group.length === 0) return null;
+        return (
+          <section key={layer}>
+            <h3>
+              {layer === 'lens' && group[0].lens ? group[0].lens : LAYER_LABEL[layer]}
+              <span className="count">{group.length}</span>
+            </h3>
+            {group.map((f) => (
+              <Finding key={f.id} finding={f} index={numbering.get(f.id) ?? 0} />
+            ))}
+          </section>
+        );
+      })}
+
+      {result.whats_working.length > 0 && (
+        <section>
+          <h3>What's working</h3>
+          <ul className="plain">
+            {result.whats_working.map((w, i) => (
+              <li key={i}>{w}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
     </div>
   );
 }
