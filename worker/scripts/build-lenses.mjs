@@ -14,7 +14,7 @@ const lensDir = join(here, '../../reference/lens');
 const out = join(here, '../src/lenses.generated.ts');
 
 // Order the picker offers them in. Anything unlisted follows, alphabetically.
-const ORDER = ['starter-work-app', 'starter-consumer-app', 'starter-manager-app'];
+const ORDER = ['starter-ecommerce-app', 'starter-banking-app', 'starter-delivery-app', 'starter-booking-app'];
 
 const files = readdirSync(lensDir)
   .filter((f) => f.endsWith('.md') && f !== '_TEMPLATE.md')

@@ -491,13 +491,17 @@ export default function App() {
         {pickedStarter && (
           <div className="notice starter">
             <div>
-              <strong>{pickedStarter.name}</strong> is a starting point, not a finished lens. It
-              carries what holds across this kind of product, but it does not know who your users
-              are or what your flows look like. Tell it below and this run uses that too.
+              <strong>{pickedStarter.name}</strong> is a starting point. It knows the kind of
+              product, not yours.
+              <ol className="steps">
+                <li>Describe your users and your main flows below.</li>
+                <li>Add any rule your team argues about, in plain words.</li>
+                <li>Run. What you wrote is used for this run only.</li>
+              </ol>
               <textarea
-                rows={3}
+                rows={4}
                 value={lensNotes}
-                placeholder="Who uses this app, and what are the main flows? Or upload a file below."
+                placeholder={`Who uses ${pickedStarter.name}, and what are their main flows?\n\nExample: returning customers on mid-range Android, mostly reordering. Delivery fees must be visible before the cart.`}
                 onChange={(e) => setLensNotes(e.target.value)}
               />
               <input
@@ -509,8 +513,9 @@ export default function App() {
                 }}
               />
               <p className="muted">
-                Leave it empty and the run still happens on the principles alone. Anything you
-                write is used for this run only; Settings can save it as a lens of its own.
+                Leave it empty and the run still happens on the general principles.
+                <strong> To keep your version</strong>, open Settings and save it under "Your own
+                lenses". It then appears in this list every time, on this computer.
               </p>
             </div>
           </div>

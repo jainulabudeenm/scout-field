@@ -114,26 +114,28 @@ evaluation without being told anything.
 
 ---
 
-## Settled: lenses are cut by persona, not by industry
+## Settled: starter lenses are named by product type
 
-3 Sep 2026. A first attempt shipped four **domain** packs: Shopping, Booking, Money, Dashboards.
-Zain rejected the axis, and he was right. Two reasons, both checkable:
+3 Sep 2026, after two wrong turns worth recording so nobody repeats them.
 
-1. **Domain packs overlap.** A checkout screen in a payments app is Shopping and Money at once,
-   and the picker only takes one answer. Persona packs do not overlap: a screen serves a worker,
-   a customer or a manager.
-2. **The template asks "who this lens is for".** Domain names answer a different question, so the
-   file fought its own structure.
+**Attempt 1** shipped activity names: Shopping and Checkout, Booking and Scheduling, Money and
+Payments, Dashboards and Internal Tools. Zain rejected "Dashboards": it names a kind of screen,
+not a kind of product, so a reader cannot tell whether it is theirs.
 
-The domain facts worth keeping were never lenses. "This screen moves money" and "this cannot be
-undone" are **severity amplifiers**, and they now live inside the persona packs, where the
-template already had a slot for them.
+**Attempt 2** over-corrected into abstract personas: Work App, Consumer App, Manager App. Also
+wrong. Correct on the axis, useless at the picker, because nobody thinks "I build a consumer app".
+They think "I build a banking app".
 
-Shipped: `starter-work-app`, `starter-consumer-app`, `starter-manager-app`. They generalise the
-internal edition's Driver / Customer / Owner split to any company.
+**Settled.** Name them the way the internal edition already did, by product type, because a
+product type carries both the persona and the domain at once. Driver App was never about delivery
+logistics; it was a whole user, a whole set of flows and a whole risk profile in two words.
 
-**Reopens if** real use shows a domain rule that cannot be expressed as an amplifier inside a
-persona pack. Then it is a fourth pack, argued on that evidence, not a return to the grid.
+Shipped: `starter-ecommerce-app`, `starter-banking-app`, `starter-delivery-app`,
+`starter-booking-app`. Each opens with a **Make this yours** section: three concrete steps, ten
+minutes, and where to save the result.
+
+**Reopens if** real use shows a product type people keep asking for. Then add that pack. Do not
+re-derive the naming scheme.
 
 ---
 
@@ -146,9 +148,9 @@ Zain, 3 Sep: offer **starting points, not finished lenses**. A handful of neutra
 user picks and then edits, for example e-commerce, booking, fintech, a dashboard. They are
 examples to shape, not products to select.
 
-- [x] Three neutral templates in `reference/lens/`, marked `<!-- starter -->`
-- [ ] Settings offers "start from a template" alongside "paste your own"
-- [ ] A template says out loud that it is generic and asks the user to add their persona
+- [x] Four product-type templates in `reference/lens/`, marked `<!-- starter -->`
+- [x] Picking a starter shows the three steps in the panel, with an example placeholder
+- [x] Each template opens with **Make this yours**: three steps, and where to save it
 
 **Verify.** Someone who has never written a lens produces a usable one in under ten minutes.
 
