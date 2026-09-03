@@ -438,12 +438,14 @@ export default function App() {
     <main>
       <header className="top">
         <h1>Scout</h1>
-        <button className="ghost small" onClick={() => setAboutOpen(!showAbout)}>
-          About
-        </button>
-        <button className="ghost small" onClick={() => setShowSettings(true)}>
-          Settings
-        </button>
+        <div className="top-actions">
+          <button className="ghost small" onClick={() => setAboutOpen(!showAbout)}>
+            About
+          </button>
+          <button className="ghost small" onClick={() => setShowSettings(true)}>
+            Settings
+          </button>
+        </div>
       </header>
 
       {showAbout && !result && <About onClose={() => setAboutOpen(false)} />}
@@ -475,7 +477,7 @@ export default function App() {
             Source
             <select value={source} onChange={(e) => setSource(e.target.value as 'design' | 'production')}>
               <option value="design">Design file</option>
-              <option value="production">Production</option>
+              <option value="production">Production screenshot</option>
             </select>
           </label>
           {allLenses.length > 0 && (

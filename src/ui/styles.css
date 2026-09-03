@@ -33,6 +33,9 @@ h3 {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 12px; border-bottom: 1px solid var(--line); flex: none;
 }
+/* Both header buttons stay together on the right. Without this, space-between
+   spreads three children and parks About in the middle of the bar. */
+.top-actions { display: flex; gap: 6px; }
 
 .controls { padding: 12px; border-bottom: 1px solid var(--line); flex: none; }
 .selection { margin-bottom: 10px; min-height: 16px; }
