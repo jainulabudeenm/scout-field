@@ -175,6 +175,14 @@ export default {
     if (url.pathname === '/lenses') {
       return Response.json({ lenses: LENS_CATALOGUE }, { headers: CORS });
     }
+    // A starter is a draft to edit, so the panel has to be able to read one back.
+    if (url.pathname.indexOf('/lenses/') === 0) {
+      const id = decodeURIComponent(url.pathname.slice('/lenses/'.length));
+      const info = LENS_CATALOGUE.find((l) => l.id === id);
+      const text = BUILTIN_LENSES[id];
+      if (!info || !text) return Response.json({ error: 'No such lens.' }, { status: 404, headers: CORS });
+      return Response.json({ id, name: info.name, text }, { headers: CORS });
+    }
     if (request.method !== 'POST') return new Response('Not found', { status: 404, headers: CORS });
 
     const ownKey = request.headers.get('x-scout-key');

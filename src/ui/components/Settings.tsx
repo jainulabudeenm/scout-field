@@ -1,15 +1,59 @@
 import { useState } from 'react';
 import type { CustomLens, Settings as S } from '../../shared/messages';
+import { fetchLensText, type LensInfo } from '../api';
 import { statsReport, totalsOf, type RunRecord } from '../../shared/stats';
+
+// The shape a lens needs to be useful. Everything the evaluation can act on:
+// who the users are, what they are trying to do, the rules, and what makes a
+// problem worse here. Offered as placeholder text so nobody faces a blank box.
+const SCAFFOLD = `# <Your product> App
+
+## Who this lens is for
+One paragraph. Who uses this, on what device, in what situation. Concrete, not aspirational.
+
+## Personas
+- **<Name the group>** — what they know, what they are short of (time, signal, literacy, patience),
+  and what failure costs them.
+- **<Second group>** — same, and say how they differ from the first.
+
+## Flows
+The paths that matter. Name each one and what "done" means.
+1. <Flow name> — starts at <...>, ends when <...>
+2. <Flow name> — starts at <...>, ends when <...>
+
+## Principles
+### P1 <Short name>
+**Plain meaning:** one sentence a non-designer understands.
+**Watch for:** what a violation actually looks like on screen.
+
+### P2 <Short name>
+**Plain meaning:**
+**Watch for:**
+
+## Severity amplifiers
+What makes an ordinary problem worse in your product. Each needs a reason, because the reason is
+shown to whoever reads the report.
+
+| Condition | Raise by | Ceiling | Reason |
+|---|---|---|---|
+| <e.g. the screen affects the user's income> | +2 | 4 | <one sentence> |
+| <e.g. the action cannot be undone> | +1 | 4 | <one sentence> |
+
+## Out of scope
+What this lens must not flag. Usually: business decisions, planned-but-unbuilt features, and
+anything contrast, touch targets and labels already cover.
+`;
 
 export default function Settings({
   settings,
+  starters,
   runs,
   onSave,
   onClearRuns,
   onClose,
 }: {
   settings: S;
+  starters: LensInfo[];
   runs: RunRecord[];
   onSave: (patch: Partial<S>) => void;
   onClearRuns: () => void;
@@ -17,6 +61,8 @@ export default function Settings({
 }) {
   const [copied, setCopied] = useState('');
   const [lensName, setLensName] = useState('');
+  const [loading, setLoading] = useState('');
+  const [loadError, setLoadError] = useState('');
   const [lensText, setLensText] = useState('');
   const totals = totalsOf(runs);
   const [draft, setDraft] = useState(settings);
@@ -104,35 +150,63 @@ export default function Settings({
             ))}
           </ul>
         )}
+        {starters.length > 0 && (
+          <>
+            <small className="muted">
+              Start from one of these. It loads the whole lens so you can edit it: personas, flows,
+              principles, and what makes a problem worse in your product. Or write your own below.
+            </small>
+            <div className="lens-presets">
+              {starters.map((s) => (
+                <button
+                  key={s.id}
+                  className="lens-chip"
+                  disabled={loading === s.id}
+                  onClick={async () => {
+                    setLoading(s.id);
+                    const got = await fetchLensText(draft, s.id);
+                    setLoading('');
+                    if (!got) return setLoadError('Could not load that one. Check the server address.');
+                    setLoadError('');
+                    setLensName(`${got.name} (ours)`);
+                    setLensText(got.text);
+                  }}
+                >
+                  {loading === s.id ? 'Loading' : s.name}
+                </button>
+              ))}
+            </div>
+            {loadError && <small className="muted">{loadError}</small>}
+          </>
+        )}
         <label>
           Lens name
           <input
             value={lensName}
-            placeholder="Name it, or pick a starting point below"
+            placeholder="Name it after your product"
             onChange={(e) => setLensName(e.target.value)}
           />
         </label>
-        <div className="lens-presets">
-          {['Driver app', 'Customer app', 'Owner app', 'Design system'].map((name) => (
-            <button
-              key={name}
-              className="lens-chip"
-              data-on={lensName === name}
-              onClick={() => setLensName(name)}
-            >
-              {name}
-            </button>
-          ))}
-        </div>
         <label>
-          Principles, as markdown
+          The lens, as markdown
           <textarea
-            rows={5}
+            rows={12}
             value={lensText}
-            placeholder="Paste your design principles, or upload a file below"
+            placeholder={SCAFFOLD}
             onChange={(e) => setLensText(e.target.value)}
           />
+          <small>
+            Personas, flows, principles and severity rules. Pick a starting point above to load a
+            full one, or paste the placeholder structure and fill it in.
+          </small>
         </label>
+        <button
+          className="ghost small"
+          disabled={Boolean(lensText.trim())}
+          onClick={() => setLensText(SCAFFOLD)}
+        >
+          Use the blank structure
+        </button>
         <div className="row">
           <input
             type="file"

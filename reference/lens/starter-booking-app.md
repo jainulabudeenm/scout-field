@@ -7,8 +7,8 @@
 This lens describes booking and scheduling apps in general. It does not know your product. Three
 steps, about ten minutes:
 
-1. **Say who your customers are.** Replace the paragraph below with your real users. Booking for
-   themselves or for a group? Days ahead or minutes ahead? Across timezones?
+1. **Rewrite Personas and Flows.** They are filled in with a generic example. Replace
+   them with your real users and your real paths. This is the change that sharpens findings most.
 2. **Replace one principle with your own.** Delete whichever of K1 to K5 matters least and write
    the rule your team actually argues about. Keep the shape: an ID, a plain-English meaning, and
    what a violation looks like.
@@ -23,6 +23,23 @@ one run. Or save the whole edited file in Settings under "Your own lenses", whic
 People reserving a slot in time. An appointment, a table, a seat, a class, a room, a delivery
 window. They are choosing between options that differ mainly in **when**, they often book for
 other people as well as themselves, and what they are booking can disappear while they look at it.
+
+## Personas
+
+Replace these with yours. Two is usually enough to sharpen an evaluation.
+
+- **Booking for themselves** — one person, one slot, deciding mainly on time and price.
+- **Booking for other people** — a group, a family member, a client. Needs to say who is actually
+  attending, and to change it later without starting again.
+
+## Flows
+
+Name the paths that matter and say what "done" means.
+
+1. **Find a slot** — starts at search, ends when they have a time they want.
+2. **Confirm it** — starts at details, ends at a confirmation stating date, time and who it is for.
+3. **Change or cancel** — starts from the confirmation or the account, ends when the change is made
+   and the customer knows what it cost them.
 
 ## What the universal layers miss here
 

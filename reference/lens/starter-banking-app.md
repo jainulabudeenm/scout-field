@@ -7,8 +7,8 @@
 This lens describes banking and payment apps in general. It does not know your product. Three
 steps, about ten minutes:
 
-1. **Say who your customers are.** Replace the paragraph below with your real users. Salaried or
-   self-employed? First bank account or fifth? Sending money abroad, or paying a bill?
+1. **Rewrite Personas and Flows.** They are filled in with a generic example. Replace
+   them with your real users and your real paths. This is the change that sharpens findings most.
 2. **Replace one principle with your own.** Delete whichever of B1 to B5 matters least and write
    the rule your team actually argues about. Keep the shape: an ID, a plain-English meaning, and
    what a violation looks like.
@@ -23,6 +23,25 @@ one run. Or save the whole edited file in Settings under "Your own lenses", whic
 People moving, holding or checking their own money. A transfer, a balance, a bill, a card, a
 statement. They are cautious because the stakes are real, often in a hurry, and a mistake is
 frequently impossible to undo. Many are anxious before they open the screen.
+
+## Personas
+
+Replace these with yours. Two is usually enough to sharpen an evaluation.
+
+- **Everyday account holder** — checks a balance, pays a bill, moves money to a known person.
+  Confident with the app, still cautious with money.
+- **Someone under money stress** — near the end of a balance, or chasing a payment that has not
+  arrived. Reads every number twice and will call support if the screen is unclear.
+
+## Flows
+
+Name the paths that matter and say what "done" means.
+
+1. **Check standing** — starts at open, ends when they know what they can spend today.
+2. **Move money** — starts at compose, ends at a receipt naming the amount, the recipient and the
+   status.
+3. **Something went wrong** — starts at a failed or missing payment, ends when they know whether
+   the money moved and what to do next.
 
 ## What the universal layers miss here
 

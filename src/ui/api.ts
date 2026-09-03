@@ -69,6 +69,20 @@ export async function fetchLenses(conn: Conn): Promise<LensInfo[]> {
   }
 }
 
+/** A starter's full markdown, so Settings can prefill it for editing. */
+export async function fetchLensText(
+  conn: { workerUrl: string },
+  id: string,
+): Promise<{ name: string; text: string } | null> {
+  try {
+    const res = await fetch(`${conn.workerUrl.replace(/\/$/, '')}/lenses/${encodeURIComponent(id)}`);
+    if (!res.ok) return null;
+    return (await res.json()) as { name: string; text: string };
+  } catch {
+    return null;
+  }
+}
+
 export interface Usage {
   input: number;
   output: number;

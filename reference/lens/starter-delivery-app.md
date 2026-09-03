@@ -7,8 +7,8 @@
 This lens describes delivery and field-work apps in general, the side used by the person doing the
 job. It does not know your product. Three steps, about ten minutes:
 
-1. **Say who your workers are.** Replace the paragraph below with your real users. Bikes or trucks?
-   Employed or gig? What phone, what conditions, what language?
+1. **Rewrite Personas and Flows.** They are filled in with a generic example. Replace
+   them with your real users and your real paths. This is the change that sharpens findings most.
 2. **Replace one principle with your own.** Delete whichever of D1 to D5 matters least and write
    the rule your team actually argues about. Keep the shape: an ID, a plain-English meaning, and
    what a violation looks like.
@@ -27,6 +27,25 @@ People who use the app to do their job. Drivers, riders, couriers, field technic
 dozens of times a day, they know it well, and their income depends on finishing tasks inside it.
 Usually one-handed, outdoors, in sun or rain, on a mid-range phone with a weak signal, with
 something else demanding their attention.
+
+## Personas
+
+Replace these with yours. Two is usually enough to sharpen an evaluation.
+
+- **New worker, first weeks** — still learning the app, afraid of making a mistake that costs
+  money, checks twice before acting.
+- **Experienced full-timer** — knows every screen, works fast, resents anything that adds a tap.
+  Their whole income runs through this app.
+
+## Flows
+
+Name the paths that matter and say what "done" means.
+
+1. **Take a job and finish it** — starts at the offer, ends when it is marked complete and paid.
+2. **Handle an exception** — starts when reality does not match the app (nobody home, wrong
+   address, damaged item), ends when the worker knows they will not be penalised.
+3. **Check the money** — starts at earnings, ends when they can match what they see to what
+   reaches their bank.
 
 ## What the universal layers miss here
 

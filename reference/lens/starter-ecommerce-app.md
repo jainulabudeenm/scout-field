@@ -7,8 +7,8 @@
 This lens describes shopping apps in general. It does not know your product. Three steps, about
 ten minutes:
 
-1. **Say who your shoppers are.** Replace the paragraph below with your real customers. New or
-   returning? Buying for themselves or for work? On what phone, in what situation?
+1. **Rewrite Personas and Flows.** They are filled in with a generic example. Replace
+   them with your real users and your real paths. This is the change that sharpens findings most.
 2. **Replace one principle with your own.** Delete whichever of E1 to E5 matters least to you and
    write the rule your team actually argues about. Keep the shape: an ID, a plain-English meaning,
    and what a violation looks like.
@@ -23,6 +23,23 @@ one run. Or save the whole edited file in Settings under "Your own lenses", whic
 People browsing, comparing and buying things on a phone. They arrived with intent but not
 commitment, a competitor is one tap away, and most are not signed in. Every extra step is a place
 to leave, and they do not tell you why.
+
+## Personas
+
+Replace these with yours. Two is usually enough to sharpen an evaluation.
+
+- **First-time visitor** — arrived from a search or an ad, knows nothing about you, has not signed
+  in, and is comparing. Failure costs them nothing, so they leave rather than persist.
+- **Returning buyer** — knows the app, reorders the same things, wants the shortest path from open
+  to paid. Failure costs them time they expected to save.
+
+## Flows
+
+Name the paths that matter and say what "done" means.
+
+1. **Find a product** — starts at home or search, ends when they open something they might buy.
+2. **Buy it** — starts at add-to-cart, ends at a confirmed order with a known total.
+3. **After the order** — starts at the confirmation, ends at delivered, returned or refunded.
 
 ## What the universal layers miss here
 

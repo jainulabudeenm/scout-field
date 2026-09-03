@@ -401,6 +401,7 @@ export default function App() {
   if (showSettings) {
     return (
       <SettingsPanel
+        starters={lenses.filter((l) => l.starter)}
         runs={runs}
         onClearRuns={() => send({ type: 'clear-runs' })}
         settings={settings}

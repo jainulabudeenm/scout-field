@@ -19,11 +19,24 @@ Copy this structure. Every section is load-bearing.
 
 One paragraph. The product, the users, and what makes their context different from a general audience. Concrete, not aspirational.
 
-### 2. What the universal layers miss here
+### 2. Personas
+
+Who actually uses this, as one or two named groups. For each: what they know, what they are short
+of (time, signal, patience, literacy, a free hand), and what a failure costs them. Two is usually
+enough. This is the section that changes findings the most, because it decides what counts as a
+problem.
+
+### 3. Flows
+
+The paths that matter, each with a start and a definition of "done". A screen is judged inside a
+flow: the same button is fine on step one and wrong on step four. Without flows, the evaluation
+can only see the screen.
+
+### 4. What the universal layers miss here
 
 The reason this lens exists. If the three universal layers already catch everything, do not write a lens.
 
-### 3. Principles
+### 5. Principles
 
 The domain's own design principles, each with:
 - A short ID and name, so findings can cite it (for example `S1 Clarity Under Pressure`)
@@ -31,7 +44,7 @@ The domain's own design principles, each with:
 - What a violation looks like, concretely
 - Red flags to scan for
 
-### 4. Severity amplifiers
+### 6. Severity amplifiers
 
 The conditions that make an ordinary problem worse in this domain. Each amplifier states:
 - The condition (for example: the screen affects the user's income)
@@ -40,7 +53,7 @@ The conditions that make an ordinary problem worse in this domain. Each amplifie
 
 Amplifiers are what let a lens upgrade an existing finding. Without them the lens can only add, not sharpen.
 
-### 5. Tags this lens contributes
+### 7. Tags this lens contributes
 
 A lens can attach extra key-value tags to any finding, its own or a universal one. Tags are a free-form map, so no schema change is needed.
 
@@ -50,7 +63,7 @@ List each tag: its key, its allowed values, and what it means. Example:
 |---|---|---|
 | `user_segment` | `new`, `returning`, `both` | Which group the finding hits, when severity genuinely differs by group |
 
-### 6. Out of scope
+### 8. Out of scope
 
 What this lens must not flag. Usually: planned-but-unshipped features, deliberate business constraints, and anything the universal layers already own. Write this section honestly; it prevents the most common lens failure, which is inventing problems to justify the lens.
 
