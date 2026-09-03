@@ -46,7 +46,7 @@ Changed from the internal edition:
 
 | File | Change | Why |
 |---|---|---|
-| `manifest.json` | `id: scout-field`, one allowed domain: `scout-field.jain-sathak.workers.dev` | The internal proxy must never appear in a public manifest |
+| `manifest.json` | Published id `1677167886121336409`, one allowed domain: `scout-field.jain-sathak.workers.dev` | The internal proxy must never appear in a public manifest |
 | `worker/wrangler.toml` | Worker is named `scout-field` | So `wrangler deploy` here can never overwrite the internal `scout-proxy` |
 | `src/main/storage.ts` | Default server is the deployed worker, not `localhost:8787` | A stranger's fresh install pointed at their own machine, where nothing runs |
 | `src/ui/components/Settings.tsx` | Opens on **Your API key**. Access code moved to Advanced | A public user has no team to ask for an access code |
@@ -118,6 +118,14 @@ next milestone. Full specification in `docs/prd-first-run-free.md`. The short ve
 
 **It is not a trial, and the copy must never call it one.** Nothing is reduced or held back: the
 first run is the whole tool. The only limit is how many times.
+
+## The published plugin id
+
+`1677167886121336409`, assigned by Figma on 3 Sep 2026 and written into `manifest.json`.
+
+**Never change it.** It is how Figma matches an update to the existing listing. A different id
+publishes a second, separate plugin and orphans every install. The internal edition keeps its own
+id, `scout-heuristic-eval`, so the two can never collide.
 
 ## State right now
 
