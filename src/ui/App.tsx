@@ -4,6 +4,7 @@ import { fetchLenses, run, ScoutError, type DetectResult, type EvalResult, type 
 import { addCrops } from './crop';
 import type { RunRecord } from '../shared/stats';
 import { cropSize, dataUriToBytes } from './crop';
+import About from './components/About';
 import Actions from './components/Actions';
 import LensChips from './components/LensChips';
 import Chat, { type Turn } from './components/Chat';
@@ -26,6 +27,9 @@ export default function App() {
   const [source, setSource] = useState<'design' | 'production'>('design');
   const [result, setResult] = useState<EvalResult | null>(null);
   const [annotated, setAnnotated] = useState('');
+  // Open for someone who has never run Scout, out of the way for everyone else.
+  // null means "not decided by the user yet", so the run history answers instead.
+  const [aboutOpen, setAboutOpen] = useState<boolean | null>(null);
   const [runs, setRuns] = useState<RunRecord[]>([]);
   const [boardNote, setBoardNote] = useState('');
   const [lenses, setLenses] = useState<LensInfo[]>([]);
@@ -415,6 +419,7 @@ export default function App() {
   }
 
   const canRun = selection.supported && phase !== 'working';
+  const showAbout = aboutOpen ?? runs.length === 0;
 
   const allLenses: LensInfo[] = [
     ...lenses,
@@ -433,10 +438,15 @@ export default function App() {
     <main>
       <header className="top">
         <h1>Scout</h1>
+        <button className="ghost small" onClick={() => setAboutOpen(!showAbout)}>
+          About
+        </button>
         <button className="ghost small" onClick={() => setShowSettings(true)}>
           Settings
         </button>
       </header>
+
+      {showAbout && !result && <About onClose={() => setAboutOpen(false)} />}
 
       <div className="controls">
         <div className="selection">

@@ -206,7 +206,7 @@ input[type='file'] { border: none; padding: 0; font-size: 10px; }
 }
 
 /* Lens preset tiles in Settings */
-.lens-presets { display: flex; flex-wrap: wrap; gap: 6px; margin: -6px 0 12px; }
+.lens-presets { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
 
 /* Update-findings prompt, placed where the eye already is */
 .apply-banner {
@@ -242,3 +242,19 @@ input[type='file'] { border: none; padding: 0; font-size: 10px; }
    between the picker and the run button and must not push the button off screen. */
 .notice .steps { margin: 6px 0 8px; padding-left: 18px; }
 .notice .steps li { margin: 2px 0; }
+
+/* About panel. Shown before the first run, and from the header button after that. */
+.about { padding: 12px; border-bottom: 1px solid var(--line); }
+.about-head { display: flex; align-items: center; justify-content: space-between; }
+.about h2 { margin: 0; font-size: 13px; }
+.about h3 { margin: 14px 0 4px; font-size: 12px; color: var(--fg); }
+.about p { margin: 6px 0; color: var(--fg-2); }
+.about ul, .about ol { margin: 4px 0; padding-left: 18px; color: var(--fg-2); }
+.about li { margin: 3px 0; }
+.about strong { color: var(--fg); font-weight: 600; }
+.about .sample {
+  margin: 6px 0; padding: 8px; overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; line-height: 1.5;
+  color: var(--fg-2); background: var(--bg-2, var(--bg)); border: 1px solid var(--line);
+  border-radius: 4px;
+}
