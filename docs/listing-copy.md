@@ -10,9 +10,19 @@ Scout
 
 ## Tagline
 
+56 characters. Limit is 100.
+
 ```
-Heuristic and accessibility evaluation, drawn on your canvas
+Heuristic and accessibility review, drawn on your canvas
 ```
+
+Alternative, plainer, if "heuristic" feels like jargon for the audience:
+
+```
+Reviews your screen and marks every problem on the canvas
+```
+
+The first one is better for search. "Heuristic evaluation" is the term designers type.
 
 ## Description
 
@@ -67,17 +77,19 @@ their products. For confidential work, use a paid key or switch to Claude
 in Settings.
 ```
 
-## Tags
+## Category
 
-Pick from what the form offers. These describe it accurately:
+**Pick `Accessibility`.**
 
-```
-accessibility
-design systems
-productivity
-ux
-utilities
-```
+It is accurate (WCAG 2.1 AA is one of the three layers), it is specific, and it is a smaller
+category than the general ones, so the listing is easier to find. The people browsing it are
+exactly the audience.
+
+If the form does not offer it, in order of preference: `Design tools`, `Productivity`,
+`Utilities`.
+
+Avoid `AI` even if offered. It is crowded, and it describes how Scout is built rather than what
+it does for the reader.
 
 ## Support contact
 
