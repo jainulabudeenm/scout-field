@@ -62,7 +62,8 @@ export default function App() {
           setSettings(msg.settings);
           void fetchLenses(msg.settings).then(setLenses);
           setSelection(msg.selection);
-          if (!msg.settings.accessCode && !msg.settings.ownKey) setShowSettings(true);
+          // No auto-open. Someone arriving from the Community gets told what Scout is
+          // before being asked for a key; About carries the button.
           break;
         case 'selection-changed':
           setSelection(msg.selection);
@@ -419,7 +420,7 @@ export default function App() {
   }
 
   const canRun = selection.supported && phase !== 'working';
-  const showAbout = aboutOpen ?? runs.length === 0;
+  const showAbout = aboutOpen ?? (runs.length === 0 || (!settings.ownKey && !settings.accessCode));
 
   const allLenses: LensInfo[] = [
     ...lenses,
@@ -448,7 +449,13 @@ export default function App() {
         </div>
       </header>
 
-      {showAbout && !result && <About onClose={() => setAboutOpen(false)} />}
+      {showAbout && !result && (
+        <About
+          needsKey={!settings.ownKey && !settings.accessCode}
+          onOpenSettings={() => setShowSettings(true)}
+          onClose={() => setAboutOpen(false)}
+        />
+      )}
 
       <div className="controls">
         <div className="selection">

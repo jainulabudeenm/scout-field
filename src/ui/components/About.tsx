@@ -3,7 +3,15 @@
  * installing this from the Community has no idea what it does or what comes back,
  * and the panel is the only place they will look.
  */
-export default function About({ onClose }: { onClose: () => void }) {
+export default function About({
+  needsKey,
+  onOpenSettings,
+  onClose,
+}: {
+  needsKey: boolean;
+  onOpenSettings: () => void;
+  onClose: () => void;
+}) {
   return (
     <section className="about">
       <header className="about-head">
@@ -85,13 +93,16 @@ export default function About({ onClose }: { onClose: () => void }) {
 
       <h3>Before you start</h3>
       <p>
-        Scout needs an API key, which you paste in Settings. A free Gemini key takes about a minute
-        at <strong>aistudio.google.com/apikey</strong>. The key is stored on this computer and sent
-        only to the model you choose.
+        Scout runs on your own API key, so nobody else pays for your evaluations. A free Gemini key
+        takes about a minute at <strong>aistudio.google.com/apikey</strong>. It is stored on this
+        computer and sent only to the model you choose.
       </p>
-      <p className="muted">
-        One run takes 90 to 160 seconds. That is normal, not a hang.
-      </p>
+      {needsKey && (
+        <button className="primary" onClick={onOpenSettings}>
+          Add your API key
+        </button>
+      )}
+      <p className="muted">One run takes 90 to 160 seconds. That is normal, not a hang.</p>
     </section>
   );
 }

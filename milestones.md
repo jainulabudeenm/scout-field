@@ -94,8 +94,7 @@ never shows it again. With a key set from the start it never appears at all.
 
 - [ ] Icon, 128x128 — prompts in `docs/listing-art-prompts.md`
 - [ ] Cover art, 1920x960 — same file
-- [ ] Listing copy: what it does, who it is for, and the key requirement stated up front so
-      nobody installs it and then feels tricked
+- [x] Listing copy written, in `docs/listing-copy.md`
 - [ ] A short screen recording of boxes landing on a real design
 
 ### P2. Submit to Figma Community · ~30m
