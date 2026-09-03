@@ -90,17 +90,23 @@ never shows it again. With a key set from the start it never appears at all.
 
 ## Publishing
 
-### P1. Listing assets · ~40m
+### P1. Listing assets · icon done, screenshots outstanding
 
-- [ ] Icon, 128x128 — prompts in `docs/listing-art-prompts.md`
+- [x] Icon, 128x128. Pixel-mosaic eye, reads at thumbnail size
 - [ ] Cover art, 1920x960 — same file
 - [x] Listing copy written, in `docs/listing-copy.md`
 - [ ] A short screen recording of boxes landing on a real design
 
-### P2. Submit to Figma Community · ~30m
+### P2. Submit to Figma Community · SUBMITTED 3 Sep 2026, in review
 
-- [ ] Figma assigns the real plugin id on publish. Update `manifest.json` if it differs
-- [ ] Publish, then install from Community on a second account and run it clean
+- [x] Figma assigned id `1677167886121336409`, now in `manifest.json`
+- [x] Listing filled from `docs/listing-copy.md`, category Accessibility
+- [x] Data security form answered. Backend declared, local storage declared, no
+      third-party requests from the plugin, no accreditation claimed
+- [x] Support contact: jain.sathak@gmail.com, public on the listing
+- [x] Submitted, awaiting Figma review. A few business days is typical
+- [ ] Once live, install from Community on a **second account** and run it clean
+- [ ] Add the 4 gallery screenshots. The listing is editable after approval
 
 **Verify.** A person who is not you installs from the Community listing and completes one
 evaluation without being told anything.
